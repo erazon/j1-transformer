@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  # mongodb:
+  #   user: root
+  #   image: 'bitnami/mongodb:latest'
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - ./.mongodata:/bitnami
+  #   networks:
+  #     - django-net
+  #   environment:
+  #     - MONGODB_HOST=localhost
+  #     - MONGODB_PORT=27017
+  #     - MONGODB_USERNAME=user
+  #     - MONGODB_PASSWORD=password123
+  #     - MONGODB_DATABASE=mongorun
+  #     - MONGODB_ROOT_PASSWORD=password123
+  #     - MONGODB_AUTH_DATABASE=mongorun
+  #   restart: 'no'
+
+  transformers:
+    image: '717417039375.dkr.ecr.us-east-1.amazonaws.com/campus-higher-reach-transformmer-stage:0.29.0'
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    network_mode: host
+    environment:
+      - ENV=stage
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
+      - MONGODB_HOST=localhost
+      - MONGODB_PORT=27017
+      - MONGODB_USERNAME=user
+      - MONGODB_PASSWORD=password123
+      - MONGODB_DATABASE=scheduler-db
+      - MONGODB_AUTH_DATABASE=scheduler-db
+
+networks:
+  django-net:
+    driver: bridge
